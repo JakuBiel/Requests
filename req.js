@@ -70,36 +70,36 @@
 // 		console.log(err);
 // 	});
 
+const checkStatusAndParse = (response) => {
+	if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
+
+	return response.json();
+};
+
+const printPlanets = (data) => {
+	console.log(data);
+	for (let planet of data.results) {
+		console.log(planet.name);
+	}
+	return Promise.resolve(data.next);
+};
+
+const fetchMore = (url) => {
+	return fetch(url);
+};
+
 fetch("https://swapi.dev/api/planets/")
-	.then((response) => {
-		if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
+	.then(checkStatusAndParse)
+	.then(printPlanets)
 
-		return response.json();
-	})
+	.then(fetchMore)
+	.then(checkStatusAndParse)
+	.then(printPlanets)
 
-	.then((data) => {
-		console.log(data);
-		for (let planet of data.results) {
-			console.log(planet.name);
-		}
+	.then(fetchMore)
+	.then(checkStatusAndParse)
+	.then(printPlanets)
 
-		const nextURL = data.next;
-
-		return fetch(nextURL);
-	})
-
-	.then((response) => {
-		if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
-
-		return response.json();
-	})
-
-	.then((data) => {
-		console.log(data);
-		for (let planet of data.results) {
-			console.log(planet.name);
-		}
-	})
 	.catch((err) => {
 		console.log("sth went wrong");
 		console.log(err);
