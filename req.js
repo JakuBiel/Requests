@@ -26,13 +26,44 @@
 // console.log("request sent");
 
 //FETCH
+// fetch("https://swapi.dev/api/planets/")
+// 	.then((response) => {
+// 		if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
+
+// 		response.json().then((data) => {
+// 			for (let planet of data.results) {
+// 				console.log(planet);
+// 				// console.log(planet.name);
+// 			}
+// 		});
+// 	})
+// 	.catch((err) => {
+// 		console.log("sth went wrong");
+// 		console.log(err);
+// 	});
+
+//fetch all planets
 fetch("https://swapi.dev/api/planets/")
 	.then((response) => {
-		response.json().then((data) => {
-			for (let planet of data.results) {
-				console.log(planet.name);
-			}
-		});
+		if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
+		//turn response to JS data
+		return response.json();
+	})
+	//from returned JS list of planets make a const of first movie on first planet
+	.then((data) => {
+		const filmURL = data.results[0].films[0];
+		//fetch that movie
+		return fetch(filmURL);
+	})
+	//
+	.then((response) => {
+		if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
+		//turn response of fetch to JS data
+		return response.json();
+	})
+	//from returned JS data print title
+	.then((data) => {
+		console.log(data.title);
 	})
 	.catch((err) => {
 		console.log("sth went wrong");
