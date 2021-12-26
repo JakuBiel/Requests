@@ -16,7 +16,7 @@ const printPlanets = ({ data }) => {
 	for (let planet of data.results) {
 		console.log(planet.name);
 	}
-	// return nextPlanets(data.next);  and no additional .then(nextPlanets)
+	// return nextPlanets(data.next);  and no additional .then(nextPlanets) already inside..is it ok?
 	return Promise.resolve(data.next);
 };
 
