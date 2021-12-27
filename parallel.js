@@ -20,5 +20,12 @@ async function get3Pokemon() {
 	const results = await Promise.all([promise1, promise2]);
 
 	console.log(results);
+	printPoke(results);
 }
 get3Pokemon();
+
+function printPoke(data) {
+	for (let poke of data) {
+		console.log(poke.data.name);
+	}
+}
